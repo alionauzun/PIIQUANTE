@@ -1,55 +1,58 @@
-// je crée un serveur HTTP en utilisant le module "http"et l'application express
-const http = require("http");
-const app = require("./app");
+//Ce fichier va permettre de lancer le serveur Node.js et d'écouter les requêtes entrantes sur le port 3000. Il va aussi gérer les erreurs. Il va utiliser l'application Express.js pour répondre aux requêtes entrantes. Ajouter la normalisation de port, la gestion d'erreur et du logging basique a la serveur Node le rend plus constant et plus facile à déboguer. 
 
-//la fonction "normalizePort" vérifie si le port fourni par l'environnement est valide, sinon le port 3000 est utilisé
+const http = require("http"); //je crée une constante pour amporter la fonction http
+const app = require("./app"); //je crée une constante pour amporter l'application
+
 const normalizePort = (val) => {
-  const port = parseInt(val, 10);
+  //je crée une fonction qui va normaliser le port
+  const port = parseInt(val, 10); //je crée une constante port qui va contenir le port passé en paramètre
 
   if (isNaN(port)) {
-    return val;
+    //je vérifie si le port est un nombre
+    return val; //je retourne le port
   }
   if (port >= 0) {
-    return port;
+    //je vérifie si le port est supérieur ou égal à 0
+    return port; //je retourne le port
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || "3000");
 
-//La fonction "errorHandler" gère les erreurs de serveur qui peuvent se produire pendant l'exécution du serveur
+const port = normalizePort(process.env.PORT || "3000"); //je crée une constante port qui sera soit le port de mon environnement soit le port 3000
+
 const errorHandler = (error) => {
+  //je crée une fonction qui va gérer les erreurs
   if (error.syscall !== "listen") {
-    throw error;
+    //je vérifie si l'erreur n'est pas liée à l'écoute du serveur
+    throw error; //je lance une erreur
   }
-  const address = server.address();
+  const address = server.address(); //je crée une constante address qui va contenir l'adresse du serveur
   const bind =
-    typeof address === "string"
+    typeof address === "string" //je crée une constante bind qui va contenir le type d'adresse
       ? "pipe " + address
       : "port: " + port;
   switch (
-    error.code 
+    error.code //je fais un switch sur le code d'erreur
   ) {
-    case "EACCES":
-      console.error(bind + " requires elevated privileges."); 
-      process.exit(1);
+    case "EACCES": //je vérifie si le code d'erreur est EACCES
+      console.error(bind + " requires elevated privileges."); //je lance une erreur
+      process.exit(1); //je quitte le processus
       break;
-    case "EADDRINUSE":
-      console.error(bind + " is already in use.");
-      process.exit(1);
+    case "EADDRINUSE": //je vérifie si le code d'erreur est EADDRINUSE
+      console.error(bind + " is already in use."); //je lance une erreur
+      process.exit(1); //je quitte le processus
       break;
-    default: 
-      throw error;
+    default: //je vérifie si le code d'erreur est autre
+      throw error; //je lance une erreur
   }
 };
 
-//je crée un serveur
-const server = http.createServer(app);
-
-//les événements "error" et "listening" sont gérés pour afficher des messages appropriés en cas d'erreur ou de succès de l'exécution du serveur 
-server.on("error", errorHandler);
+const server = http.createServer(app); //je crée une constante server qui va contenir le serveur http qui va utiliser l'application app pour répondre aux requêtes entrantes
+server.on("error", errorHandler); //je fais un écouteur d'évènement sur l'erreur
 server.on("listening", () => {
+  //je fais un écouteur d'évènement sur l'écoute
   const address = server.address();
   const bind = typeof address === "string" ? "pipe " + address : "port " + port;
-  // console.log("Listening on " + bind);
+  console.log("Listening on " + bind); //je lance un message dans la console
 });
-server.listen(port);
+server.listen(port); //je lance le serveur sur le port

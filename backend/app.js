@@ -33,7 +33,6 @@ app.use((req, res, next) => {
 //je configure les routes
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
-
 //je configure le dossier images comme étant un dossier statique
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
