@@ -1,8 +1,13 @@
-// //Dans une application Express, un contrôleu est un objet JavaScript qui contient des fonctions appelées actions. Ces fonctions sont appelées lorsque les utilisateurs accèdent à une route spécifique. Les contrôleurs sont utilisés pour séparer la logique de routage de l'application Express de la logique de traitement des données.
+//bycrypt hashe le mot de passe
 const bcrypt = require('bcrypt');
+
+//jsonwebtoken crée un token d'authentification
 const jwt = require('jsonwebtoken');
+
+//je importe le modèle User
 const User = require('../models/User');
 
+//je crée une fonction qui va enregistrer un nouvel utilisateur dans la base de données
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -17,6 +22,7 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
+//je crée une fonction qui va permettre à un utilisateur de se connecter
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then(user => {
