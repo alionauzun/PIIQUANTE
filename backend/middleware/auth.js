@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 module.exports = (req, res, next) => {
   try { 
     const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, "SECRET_TOKESECRET_TOKEN_KEY_RANDOM_STRING_123456789_987654321_123N_KEY");
+    const decodedToken = jwt.verify(token, 'SECRET_TOKEN_KEY_RANDOM_STRING_123456789_987654321_123');
     const userId = decodedToken.userId;
     req.auth = {
       userId: userId,
