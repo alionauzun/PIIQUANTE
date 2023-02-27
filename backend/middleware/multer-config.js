@@ -1,4 +1,4 @@
-//multer est un middleware qui va gérer les fichiers entrants dans les requêtes HTTP et les enregistrer sur le serveur dans un dossier spécifique (images)
+//------Configuration de multer pour la gestion des fichiers entrants--------
 const multer = require("multer");
 
 // Dictionnaire des types MIME
@@ -6,6 +6,8 @@ const MIME_TYPES = {
     "image/jpg": "jpg",
     "image/jpeg": "jpg",
     "image/png": "png",
+    "image/webp": "webp",
+    "image/svg+xml": "svg",
 };
 
 // Configuration de multer

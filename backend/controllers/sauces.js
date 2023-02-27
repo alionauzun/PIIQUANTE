@@ -1,15 +1,19 @@
 //----------------------la logique métier----------------------
+//Un fichier de contrôleur exporte des méthodes qui sont ensuite attribuées aux routes pour améliorer la maintenabilité de l'application
 
 // Importation du modèle sauce
 const Sauce = require("../models/Sauce");
+
 // Importation du package fs pour la gestion des fichiers entrants et sortants du serveur
 const fs = require("fs");
 
-// Création d'une sauce
+// Création d'un objet sauce
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
+    //L'utilisation du mot-clé new avec un modèle Mongoose crée par défaut un champ_id, mais on doit utiliser le paramètre id de la requête pour configurer le Sauce avec le même _id qu'avant.
     delete sauceObject._id;
     delete sauceObject._userId;
+
     const sauce = new Sauce({
         ...sauceObject,
         userId: req.auth.userId,
@@ -26,7 +30,7 @@ exports.createSauce = (req, res, next) => {
     });
 };
 
-// Modification d'une sauce
+// Modification d'un objet sauce
 exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ? {
             ...JSON.parse(req.body.sauce),
@@ -38,9 +42,12 @@ exports.modifySauce = (req, res, next) => {
         if (!sauce) {
             return res.status(404).json({ message: "Sauce non trouvée !" });
         }
+        //on verifie que l'utilisateur qui veut modifier la sauce est bien le propriétaire de la sauce
         if (sauce.userId !== req.auth.userId) {
             return res.status(401).json({ message: "Not authorized" });
         }
+        //la methode updateOne permet de modifier une sauce
+        //le premier argument est l'objet de comparaison pour trouver la sauce à modifier donc qui a l'id est egale a l'id qui est envoier dans les parametres de la requete et le deuxième argument c'est les nouvelles versions de l'objet sauce
         Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
             .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
             .catch((error) => res.status(400).json({ error }));
@@ -50,7 +57,7 @@ exports.modifySauce = (req, res, next) => {
         });
     };
 
-// Suppression d'une sauce
+// Suppression d'un objet sauce
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id})
         .then(sauce => {
@@ -70,7 +77,7 @@ exports.deleteSauce = (req, res, next) => {
         });
 };
 
-// Récupération d'une sauce
+// Récupération d'un objet sauce
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({
         _id: req.params.id,
@@ -79,7 +86,7 @@ exports.getOneSauce = (req, res, next) => {
     .catch((error) => res.status(404).json({ error }));
 };
 
-// Récupération de toutes les sauces
+// Récupération de toutes les objets sauces
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
     .then((sauces) => res.status(200).json(sauces))

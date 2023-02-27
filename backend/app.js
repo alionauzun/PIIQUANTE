@@ -1,4 +1,5 @@
 //------------------je crée une application express------------------
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -7,7 +8,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/user'); 
 const sauceRoutes = require('./routes/sauces');
 
-//importation du package path
+//importation du package path pour accéder au chemin de notre système de fichiers
 const path = require('path');
 
 // connexion à la base de données MongoDB avec mongoose
@@ -19,10 +20,10 @@ mongoose.connect("mongodb+srv://aliona:Oignies11@atlascluster.wvmjntm.mongodb.ne
     
 const app = express();
 
-//je transforme le corps de la requête en objet JS utilisable 
+//ajoût du middleware express.json() qui extrercte le corps JSON et gerer les requêtes POST envoyées par le frontend
 app.use (express.json());
 
-//je configure le header pour éviter les erreurs CORS
+//j'implémente CORS pour que le front-end effectuer des appels vers l'application en toute sécurité
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -33,7 +34,7 @@ app.use((req, res, next) => {
 //je configure les routes
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
-//je configure le dossier images comme étant un dossier statique
+//je configure le serveur pour renvoyer les images de manière statique
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //exportation de l'application express
