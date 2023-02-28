@@ -1,4 +1,8 @@
 ///---configuration du middleware d'authentification----------------
+
+//verification des informations d'authentification envoyées par le client 
+//middleware prends le token envoyé par le client vérifie la validité 
+//permet à nos différentes routes d'en exploiter les différentes informations telles que le User Id
 const jwt = require("jsonwebtoken");
 
 //middleware d'authentification pour sécuriser les routes de l'API

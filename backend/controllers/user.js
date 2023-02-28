@@ -4,12 +4,18 @@ const bcrypt = require('bcrypt');
 //jwt permet de créer un token d'authentification
 const jwt = require('jsonwebtoken');
 
+const validator = require('validator');
+
 //importation du modèle user pour la création d'un nouvel utilisateur
 const User = require('../models/User');
 
 
+
 //enregistrement d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
+    if (!validator.isEmail(req.body.email)) {
+        return res.status(400).json({ error: 'Adresse e-mail invalide' });
+    }
     //j'utilise la méthode hash de packade de cryptage bcrypt pour hasher le mot de passe
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
