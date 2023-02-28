@@ -18,7 +18,7 @@ const normalizePort = (val) => {
 //J’utilise la fonction "normalizePort" vérifie si le port fourni par l'environnement est valide, sinon il utilise le port 3000.
 const port = normalizePort(process.env.PORT || "3000");
 
-//la fonction "errorHandler" gère les erreurs de serveur qui peuvent se produire pendant l'exécution. 
+//la fonction "errorHandler" gère les erreurs de serveur
 const errorHandler = (error) => {
   if (error.syscall !== "listen") {
     throw error;
@@ -31,10 +31,13 @@ const errorHandler = (error) => {
   switch (
     error.code
   ) {
+    //"EACCES" signifie que le serveur n'a pas les droits pour utiliser le port
     case "EACCES":
       console.error(bind + " requires elevated privileges.");
       process.exit(1);
       break;
+
+    //"EADDRINUSE" signifie que le port est déjà utilisé
     case "EADDRINUSE":
       console.error(bind + " is already in use.");
       process.exit(1);

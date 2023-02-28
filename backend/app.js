@@ -1,6 +1,7 @@
 //------------------je crée une application express------------------
 
 const express = require('express');
+//importation du package body-parser pour analyser les requêtes entrantes et les rendre accessibles dans req.body 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
